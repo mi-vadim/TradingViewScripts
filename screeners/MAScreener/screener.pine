@@ -1,0 +1,173 @@
+//@version=5
+//
+// Title:   [MiV] MA Screener v1.1
+// Author:  MiVadim
+// Date:    09-Apr-2023
+// Version: v1.1
+indicator('[MiV] MA Screener v1.1', overlay=true)
+
+// =============================================================================
+// USER INPUT SETTINGS
+// =============================================================================
+
+colWidth        = input.float(5, title = "Column Width (%)")
+scrNumb         = input.int(1, title = "Screen #", tooltip = '1 - rightmost screener', minval = 1)
+showNegative    = input.bool(false, title="Show negative values")
+ 
+// -------------------- Symbols -------------------- //
+
+u01 = input.bool(true,  title = "", group = 'Symbols', inline = 's01')
+u02 = input.bool(true,  title = "", group = 'Symbols', inline = 's02')
+u03 = input.bool(true,  title = "", group = 'Symbols', inline = 's03')
+u04 = input.bool(true,  title = "", group = 'Symbols', inline = 's04')
+u05 = input.bool(true,  title = "", group = 'Symbols', inline = 's05')
+u06 = input.bool(true,  title = "", group = 'Symbols', inline = 's06')
+u07 = input.bool(true,  title = "", group = 'Symbols', inline = 's07')
+u08 = input.bool(true,  title = "", group = 'Symbols', inline = 's08')
+u09 = input.bool(true,  title = "", group = 'Symbols', inline = 's09')
+u10 = input.bool(true,  title = "", group = 'Symbols', inline = 's10')
+u11 = input.bool(true,  title = "", group = 'Symbols', inline = 's11')
+u12 = input.bool(true,  title = "", group = 'Symbols', inline = 's12')
+u13 = input.bool(true,  title = "", group = 'Symbols', inline = 's13')
+u14 = input.bool(true,  title = "", group = 'Symbols', inline = 's14')
+u15 = input.bool(true,  title = "", group = 'Symbols', inline = 's15')
+u16 = input.bool(true,  title = "", group = 'Symbols', inline = 's16')
+u17 = input.bool(true,  title = "", group = 'Symbols', inline = 's17')
+u18 = input.bool(true,  title = "", group = 'Symbols', inline = 's18')
+u19 = input.bool(true,  title = "", group = 'Symbols', inline = 's19')
+u20 = input.bool(true,  title = "", group = 'Symbols', inline = 's20')
+u21 = input.bool(true,  title = "", group = 'Symbols', inline = 's21')
+u22 = input.bool(true,  title = "", group = 'Symbols', inline = 's22')
+u23 = input.bool(true,  title = "", group = 'Symbols', inline = 's23')
+u24 = input.bool(true,  title = "", group = 'Symbols', inline = 's24')
+u25 = input.bool(true,  title = "", group = 'Symbols', inline = 's25')
+u26 = input.bool(true,  title = "", group = 'Symbols', inline = 's26')
+u27 = input.bool(true,  title = "", group = 'Symbols', inline = 's27')
+u28 = input.bool(true,  title = "", group = 'Symbols', inline = 's28')
+u29 = input.bool(true,  title = "", group = 'Symbols', inline = 's29')
+u30 = input.bool(true,  title = "", group = 'Symbols', inline = 's30')
+
+s01 = input.symbol('LTCUSDT.P',  group = 'Symbols', inline = 's01')
+s02 = input.symbol('CRVUSDT.P',  group = 'Symbols', inline = 's02')
+s03 = input.symbol('AKROUSDT.P', group = 'Symbols', inline = 's03')
+s04 = input.symbol('RNDRUSDT.P',  group = 'Symbols', inline = 's04')
+s05 = input.symbol('GTCUSDT.P',  group = 'Symbols', inline = 's05')
+s06 = input.symbol('DOGEUSDT.P',  group = 'Symbols', inline = 's06')
+s07 = input.symbol('DUSKUSDT.P',   group = 'Symbols', inline = 's07')
+s08 = input.symbol('AGLDUSDT.P',  group = 'Symbols', inline = 's08')
+s09 = input.symbol('UNFIUSDT.P',  group = 'Symbols', inline = 's09')
+s10 = input.symbol('LINKUSDT.P',  group = 'Symbols', inline = 's10')
+s11 = input.symbol('ROSEUSDT.P',  group = 'Symbols', inline = 's11')
+s12 = input.symbol('XCNUSDT.P',  group = 'Symbols', inline = 's12')
+s13 = input.symbol('XNOUSDT.P',  group = 'Symbols', inline = 's13')
+s14 = input.symbol('ATOMUSDT.P',   group = 'Symbols', inline = 's14')
+s15 = input.symbol('ADAUSDT.P',   group = 'Symbols', inline = 's15')
+s16 = input.symbol('LDOUSDT.P',  group = 'Symbols', inline = 's16')
+s17 = input.symbol('SUSHIUSDT.P',  group = 'Symbols', inline = 's17')
+s18 = input.symbol('CHZUSDT.P',  group = 'Symbols', inline = 's18')
+s19 = input.symbol('BTCUSDT.P',  group = 'Symbols', inline = 's19')
+s20 = input.symbol('TRXUSDT.P',  group = 'Symbols', inline = 's20')
+s21 = input.symbol('LDOUSDT.P',  group = 'Symbols', inline = 's21')
+s22 = input.symbol('RENUSDT.P',  group = 'Symbols', inline = 's22')
+s23 = input.symbol('ZILUSDT.P', group = 'Symbols', inline = 's23')
+s24 = input.symbol('EOSUSDT.P',  group = 'Symbols', inline = 's24')
+s25 = input.symbol('BAKEUSDT.P',  group = 'Symbols', inline = 's25')
+s26 = input.symbol('REQUSDT.P',  group = 'Symbols', inline = 's26')
+s27 = input.symbol('XTZUSDT.P',   group = 'Symbols', inline = 's27')
+s28 = input.symbol('SKLUSDT.P',  group = 'Symbols', inline = 's28')
+s29 = input.symbol('ICXUSDT.P',  group = 'Symbols', inline = 's29')
+s30 = input.symbol('UNFIUSDT.P',  group = 'Symbols', inline = 's30')
+
+
+// =============================================================================
+// INDICATOR LOGIC
+// =============================================================================
+
+type MovingAverageData
+    float   Price
+    float   MA100
+    float   MA200
+    float   diff100
+    float   diff200
+
+type SymbolData
+    bool    Enabled
+    string  Name
+    MovingAverageData MAData
+
+// Get only symbol
+only_symbol(s) => 
+    array.get(str.split(s, ":"), 1)
+
+screener_func() =>
+    price = close
+    ema100 = ta.ema(close, 100)
+    ema200 = ta.ema(close, 200)
+    diff100 = (math.abs(ema100 - price) / ((price + ema100) / 2) ) * 100
+    diff200 = (math.abs(ema200 - price) / ((price + ema200) / 2) ) * 100
+    MovingAverageData.new(price, ema100, ema200, diff100, diff200)
+
+symbolsArray    = array.new<SymbolData>(0)
+MAArray         = array.new<MovingAverageData>(0)
+
+symbolsArray.push(SymbolData.new(u01, only_symbol(s01), request.security(s01, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u02, only_symbol(s02), request.security(s02, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u03, only_symbol(s03), request.security(s03, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u04, only_symbol(s04), request.security(s04, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u05, only_symbol(s05), request.security(s05, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u06, only_symbol(s06), request.security(s06, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u07, only_symbol(s07), request.security(s07, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u08, only_symbol(s08), request.security(s08, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u09, only_symbol(s09), request.security(s09, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u10, only_symbol(s10), request.security(s10, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u11, only_symbol(s11), request.security(s11, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u12, only_symbol(s12), request.security(s12, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u13, only_symbol(s13), request.security(s13, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u14, only_symbol(s14), request.security(s14, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u15, only_symbol(s15), request.security(s15, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u16, only_symbol(s16), request.security(s16, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u17, only_symbol(s17), request.security(s17, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u18, only_symbol(s18), request.security(s18, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u19, only_symbol(s19), request.security(s19, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u20, only_symbol(s20), request.security(s20, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u21, only_symbol(s21), request.security(s21, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u22, only_symbol(s22), request.security(s22, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u23, only_symbol(s23), request.security(s23, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u24, only_symbol(s24), request.security(s24, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u25, only_symbol(s25), request.security(s25, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u26, only_symbol(s26), request.security(s26, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u27, only_symbol(s27), request.security(s27, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u28, only_symbol(s28), request.security(s28, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u29, only_symbol(s29), request.security(s29, timeframe.period, screener_func())))
+symbolsArray.push(SymbolData.new(u30, only_symbol(s30), request.security(s30, timeframe.period, screener_func())))
+
+
+// =============================================================================
+// DASHBOARD
+// =============================================================================
+
+var tbl = table.new(position.top_right, 3, 31, frame_color=#151715, frame_width=1, border_width=2, border_color=color.new(color.white, 100))
+TABLE_BG_COLOR          = color.new(color.black, 0)
+TABLE_SUCCESS_COLOR     = color.new(color.teal, 40)
+
+if barstate.islast
+
+    table.cell(tbl, 0, 0, 'Symbol', width = colWidth, text_halign = text.align_center, bgcolor = TABLE_BG_COLOR, text_color = color.white, text_size = size.small)
+    table.cell(tbl, 1, 0, '> 100 MA', width = colWidth, text_halign = text.align_center, bgcolor = TABLE_BG_COLOR, text_color = color.white, text_size = size.small)
+    table.cell(tbl, 2, 0, '> 200 MA', width = colWidth, text_halign = text.align_center, bgcolor = TABLE_BG_COLOR, text_color = color.white, text_size = size.small)
+    if (scrNumb > 1)
+        table.cell(tbl, 2, 0, '', width = colWidth * 2 * (scrNumb - 1), text_halign = text.align_center, bgcolor = color.new(color.gray, 100), text_size = size.small)
+
+    for i = 0 to 29
+        symbol = array.get(symbolsArray, i)
+        if symbol.Enabled
+            MAData = symbol.MAData
+            resultColumn_100  = MAData.MA100 < MAData.Price ? #014520 : showNegative ? #d20909 : #aaaaaa
+            resultColumn_200  = MAData.MA200 < MAData.Price ? #014520 : showNegative ? #d20909 : #aaaaaa
+
+            negative_100 = showNegative ? 'False ' + '( -' + str.tostring(math.round(MAData.diff100, 1)) + ')' : 'False'
+            negative_200 = showNegative ? 'False ' + '( -' + str.tostring(math.round(MAData.diff200, 1)) + ')' : 'False'
+
+            table.cell(tbl, 0, i + 1, symbol.Name                           , text_halign = text.align_center, bgcolor = TABLE_BG_COLOR, text_color = color.white, text_size = size.small)
+            table.cell(tbl, 1, i + 1, MAData.MA100 < MAData.Price ? 'True ' + '(' + str.tostring(math.round(MAData.diff100, 1)) + ')' : negative_100, text_halign = text.align_center, bgcolor = resultColumn_100, text_color = color.white, text_size = size.small)
+            table.cell(tbl, 2, i + 1, MAData.MA200 < MAData.Price ? 'True ' + '(' + str.tostring(math.round(MAData.diff200, 1)) + ')' : negative_200, text_halign = text.align_center, bgcolor = resultColumn_200, text_color = color.white, text_size = size.small)
