@@ -1,0 +1,91 @@
+//@version=5
+//
+// Title:   [MiV] Trading Session
+// Author:  MiVadim
+// Date:    02-May-2023
+// Version: v1.1
+indicator('[MiV] Trading Session', overlay=true)
+
+// =============================================================================
+// USER INPUT SETTINGS
+// =============================================================================
+
+sessionType = input.string('My own', 'Session type', options = ['Stocks London', 'Stocks USA', 'Stocks Tokio', 'Stocks Xetra', 'Stocks Moscow', 'Forex London', 'Forex USA', 'Forex Tokio', 'Forex Sydney', 'My own'])
+
+customSession = input.session("0700-1600", "Session period", group="Trading Session", tooltip = 'Available only for type = "My own"')
+
+mon = input.bool(true, group = 'Days', inline='days')
+tue = input.bool(true, group = 'Days', inline='days')
+wed = input.bool(true, group = 'Days', inline='days')
+thu = input.bool(true, group = 'Days', inline='days')
+fri = input.bool(true, group = 'Days', inline='days')
+sat = input.bool(true, group = 'Days', inline='days')
+sun = input.bool(true, group = 'Days', inline='days')
+
+startAlert = input.bool(true, 'Alert on start session', group = 'alerts', inline = 'alerts')
+endAlert = input.bool(true, 'Alert on end session', group = 'alerts', inline = 'alerts')
+
+backgroudColor = input.color(color.blue, 'Background color for active session', group = 'Plotting')
+
+// =============================================================================
+// INDICATOR LOGIC
+// =============================================================================
+
+sessionTime = switch (sessionType)
+    'Stocks London' => "0700-1530",
+    'Stocks USA'    => "1430-2100",
+    'Stocks Tokio'  => "0000-0630",
+    'Stocks Xetra'  => "0700-1530",
+    'Stocks Moscow' => "0700-1540",
+    'Forex London'  => "0700-1600",
+    'Forex USA'     => "1300-2200",
+    'Forex Tokio'   => "0000-0900",
+    'Forex Sydney'  => "2100-0600",
+    'My own'        => customSession
+
+
+int currentTime = time(timeframe.period, sessionTime)
+
+if dayofweek(currentTime) == dayofweek.monday and not mon
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.tuesday and not tue
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.wednesday and not wed
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.thursday and not thu
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.friday and not fri
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.saturday and not sat
+    currentTime := na
+
+if dayofweek(currentTime) == dayofweek.sunday and not sun
+    currentTime := na
+
+
+// =============================================================================
+// DEBUG INFO
+// =============================================================================
+plot(currentTime, 'time', display = display.data_window)
+
+
+// =============================================================================
+// ALERTS
+// =============================================================================
+
+if startAlert and na(currentTime[0]) and not na(currentTime)
+    alert('Session started', alert.freq_once_per_bar)
+
+if endAlert and not na(currentTime[0]) and na(currentTime)
+    alert('Session ended', alert.freq_once_per_bar)
+
+// =============================================================================
+// PLOTTING
+// =============================================================================
+
+bgcolor(currentTime ? color.new(backgroudColor, 90) : na)
